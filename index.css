@@ -1,0 +1,397 @@
+/* ───────── 기본 설정 및 전역 스타일 ───────── */
+* {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: #eef2f3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .view { display: none; }
+  .active { display: block; }
+  
+  /* ───────── 버튼 기본 스타일 ───────── */
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .btn-secondary {
+    background-color: #fff;
+    color: #007bff;
+    border: 2px solid #007bff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* ───────── 메인 메뉴 ───────── */
+  #menu {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 40px 30px;
+    margin: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+  }
+  #menu h1 {
+    font-size: 2.2em;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  .menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  #versionInfo {
+    font-size: 12px;
+    color: #999;
+    margin-top: 15px;
+  }
+  
+  /* ───────── 덱 목록 (학습용) ───────── */
+  #deckList {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin: 20px;
+    width: 90%;
+    max-width: 500px;
+  }
+  #deckList h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .list-item {
+    cursor: pointer;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    margin: 8px 0;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: background 0.2s;
+  }
+  .list-item:hover { background: #f0f0f0; }
+  #backFromDeckList {
+    display: block;
+    margin: 20px auto 0;
+  }
+  
+  /* ───────── 학습 화면 ───────── */
+  .study-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .study-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    flex-wrap: wrap;
+  }
+  .left-header, .center-header, .right-header {
+    flex: 1;
+    min-width: 150px;
+  }
+  .center-header { text-align: center; }
+  #progressInfo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .progress-bar {
+    width: 80%;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .progress {
+    height: 100%;
+    width: 0;
+    background: #007bff;
+    transition: width 0.3s ease-in-out;
+  }
+  .counts {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #333;
+  }
+  .study-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+    min-height: 400px;
+    background: #f8f9fa;
+  }
+  /* 플래시카드 영역 */
+  .flashcard {
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    background: #fff;
+    border: 2px solid #007bff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+    perspective: 800px;
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .card-back { transform: rotateY(180deg); }
+  .flashcard.is-flipped { transform: rotateY(180deg); }
+  .flashcard.rotate-out { transform: rotateY(90deg); }
+  .flashcard.rotate-in { transform: rotateY(90deg); }
+  .study-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 20px;
+  }
+  
+  /* ───────── 라이브러리 화면 (카드 형태) ───────── */
+  .library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 600px;
+    margin: 20px;
+  }
+  #libraryList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 90%;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  .library-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .library-card .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .library-card .card-count {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .library-card .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  .library-card .card-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .library-footer {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* ───────── 덱 편집 화면 (개선된 레이아웃) ───────── */
+  .deck-edit-header {
+    width: 90%;
+    max-width: 700px;
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .deck-edit-actions button {
+    margin-left: 5px;
+  }
+  .deck-title-section {
+    width: 90%;
+    max-width: 700px;
+    margin: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  #deckTitleInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+  #deckEditList {
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+  }
+  .card-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+  }
+  .card-edit-index {
+    width: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: #007bff;
+  }
+  .card-edit-inputs {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+  }
+  .card-edit-inputs input {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  .btn-delete-card {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #dc3545;
+  }
+  .deck-edit-footer {
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* ───────── 설정 화면 ───────── */
+  #settingsView {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin: 20px;
+    width: 90%;
+    max-width: 500px;
+  }
+  #settingsView h2 { margin-top: 0; color: #333; }
+  .settings-section { margin-bottom: 20px; }
+  .settings-label {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toggle-text {
+    font-size: 16px;
+    color: #555;
+  }
+  .settings-description {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+  }
+  
+  /* ───────── 모달 ───────── */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: modalAppear 300ms ease-out;
+  }
+  @keyframes modalAppear {
+    0% { opacity: 0; transform: scale(0.9); }
+    80% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .modal-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  

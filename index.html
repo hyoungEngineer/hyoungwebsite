@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>플래시카드 앱</title>
+  <!-- Roboto 폰트: 제목은 두껍게, 본문은 깔끔하게 -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- CSS 연결 -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <!-- 메인 메뉴 -->
+  <div id="menu" class="view active">
+    <h1>플래시카드 앱</h1>
+    <div class="menu-container">
+      <button id="studyBtn" class="btn-primary">
+        <span class="icon">📚</span>
+        <span>학습하기</span>
+      </button>
+      <button id="libraryBtn" class="btn-primary">
+        <span class="icon">📁</span>
+        <span>라이브러리</span>
+      </button>
+      <button id="settingsBtn" class="btn-primary">
+        <span class="icon">⚙️</span>
+        <span>설정</span>
+      </button>
+    </div>
+    <div id="versionInfo">beta0.1-released</div>
+  </div>
+  
+  <!-- 덱 목록 (학습용) -->
+  <div id="deckList" class="view">
+    <h2>학습할 플래시카드 목록</h2>
+    <div id="deckItems"></div>
+    <button id="backFromDeckList" class="btn-secondary">메인 메뉴로</button>
+  </div>
+  
+  <!-- 학습 화면 -->
+  <div id="studyView" class="view">
+    <div class="study-container">
+      <header class="study-header">
+        <div class="left-header">
+          <button id="mainMenuBtn" class="btn-primary">메인 메뉴</button>
+        </div>
+        <div class="center-header">
+          <div id="progressInfo">0 / 0</div>
+          <div class="progress-bar">
+            <div class="progress"></div>
+          </div>
+          <div class="counts">알고 있음: <span id="knownCount">0</span> / 기억 못함: <span id="remainingCount">0</span></div>
+        </div>
+        <div class="right-header">
+          <button id="endStudyBtn" class="btn-danger">학습 종료</button>
+        </div>
+      </header>
+      <div class="study-main">
+        <!-- 플래시카드 영역 (앞면/뒷면) -->
+        <div class="flashcard" id="flashcard">
+          <div class="card-front" id="cardFront"></div>
+          <div class="card-back" id="cardBack"></div>
+        </div>
+      </div>
+      <div class="study-controls">
+        <button id="btnKnown" class="btn-primary control-btn">알고 있음</button>
+        <button id="btnForgot" class="btn-danger control-btn">기억 못함</button>
+      </div>
+      <!-- 결과 UI (라운드 종료 시) -->
+      <div id="studyResult">
+        <p id="resultMessage"></p>
+        <p id="resultPercentage"></p>
+        <div id="resultButtons"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 라이브러리 화면 (카드(패널) 형태로 재구성) -->
+  <div id="libraryView" class="view">
+    <div class="library-header">
+      <h2>라이브러리</h2>
+      <button id="libraryAddDeckBtn" class="btn-primary">카드 추가</button>
+    </div>
+    <div id="libraryList"></div>
+    <div class="library-footer">
+      <button id="backFromLibrary" class="btn-secondary">메인 메뉴로</button>
+    </div>
+  </div>
+  
+  <!-- 덱 편집 화면 (카드 추가/수정) - 개선된 레이아웃 -->
+  <div id="deckEditView" class="view">
+    <div class="deck-edit-header">
+      <h2 id="deckEditHeaderTitle">카드 편집</h2>
+      <div class="deck-edit-actions">
+        <button id="saveDeckBtn" class="btn-primary">저장하기</button>
+        <button id="cancelDeckEditBtn" class="btn-secondary">취소</button>
+        <button id="deleteDeckBtn" class="btn-danger">플래시카드 삭제하기</button>
+      </div>
+    </div>
+    <div class="deck-title-section">
+      <label for="deckTitleInput">덱 제목:</label>
+      <input type="text" id="deckTitleInput" placeholder="덱 제목">
+    </div>
+    <!-- 카드 편집 행들이 카드 형태로 표시됨 -->
+    <div id="deckEditList"></div>
+    <div class="deck-edit-footer">
+      <button id="addCardRowBtn" class="btn-primary">카드 추가</button>
+    </div>
+  </div>
+  
+  <!-- 설정 화면 -->
+  <div id="settingsView" class="view">
+    <h2>설정</h2>
+    <div class="settings-section">
+      <label class="settings-label">TTS 사용</label>
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" id="ttsToggle">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-text">플래시카드 학습 시 자동으로 음성이 재생됩니다.</span>
+      </div>
+    </div>
+    <div class="settings-section">
+      <label class="settings-label">모든 플래시 카드 삭제하기</label>
+      <p class="settings-description">모든 카드를 삭제합니다. 이 작업은 되돌릴 수 없습니다.</p>
+      <button id="deleteAllCardsBtn" class="btn-danger">모든 플래시 카드 삭제하기</button>
+    </div>
+    <div class="settings-section">
+      <button id="backFromSettings" class="btn-secondary">메인 메뉴로</button>
+    </div>
+  </div>
+  
+  <!-- 모달: 덱 삭제 확인 (개별 덱 편집용) -->
+  <div id="deleteConfirmModal" class="modal">
+    <div class="modal-content">
+      <p>이 플래시카드를 정말 삭제 하시겠습니까? 되돌릴 수 없습니다.</p>
+      <button id="confirmDeleteBtn" class="btn-danger">네, 삭제합니다</button>
+      <button id="cancelDeleteBtn" class="btn-primary">아니오</button>
+    </div>
+  </div>
+  
+  <!-- 모달: 모든 플래시 카드 삭제 확인 -->
+  <div id="deleteAllModal" class="modal">
+    <div class="modal-content">
+      <p>정말로 삭제하시겠습니까? 한 번만 다시 생각해주세요.</p>
+      <button id="confirmDeleteAllBtn" class="btn-danger">네, 삭제합니다</button>
+      <button id="cancelDeleteAllBtn" class="btn-primary">아니오</button>
+    </div>
+  </div>
+  
+  <!-- JS 연결 -->
+  <script src="index.js"></script>
+</body>
+</html>
